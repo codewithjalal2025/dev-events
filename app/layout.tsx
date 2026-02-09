@@ -16,7 +16,7 @@ const martianMono = Martian_Mono({
 
 export const metadata: Metadata = {
   title: "Dev Event",
-  description: "Dev Event is the best Next js 16 Application",
+  description: "The Hub for Every Dev Event You Musin't Miss",
 };
 
 export default function RootLayout({
