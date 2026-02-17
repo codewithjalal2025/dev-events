@@ -89,7 +89,7 @@ const EventDetailsPage = async ({ params }: { params: Promise<{ slug: string }> 
   const event = json?.event;
   const { description, image, overview, date, time, location, mode, agenda, audience, tags, organizer } = event || {};
 
-  if (!description) return NotFoundUI({ message: 'Event data incomplete' });
+  if (!description || !event?._id) return NotFoundUI({ message: 'Event data incomplete' });
 
 
   const bookings=10;
@@ -168,7 +168,12 @@ const EventDetailsPage = async ({ params }: { params: Promise<{ slug: string }> 
                 </p>
               )
             }
-         <BookEvent eventId={event._id} slug={slug} />
+         {/* Only render BookEvent if event._id is present */}
+         {event._id ? (
+           <BookEvent eventId={event._id} slug={slug} />
+         ) : (
+           <p className="text-sm text-red-500">Event unavailable for booking.</p>
+         )}
           </div>
 
 
@@ -185,7 +190,7 @@ const EventDetailsPage = async ({ params }: { params: Promise<{ slug: string }> 
           {
             similarEvents.length > 0 &&
               similarEvents.map((similarEvent: IEvent) => (
-                <EventCard key={similarEvent.title || similarEvent.slug} {...similarEvent} />
+                <EventCard key={similarEvent._id || similarEvent.slug} {...similarEvent} />
               ))
             
           }
