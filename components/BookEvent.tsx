@@ -8,7 +8,7 @@ const BookEvent = () => {
     const [submitted, setSubmitted] = useState(false);
 
 
-    const handleSubmit=(e:React.SubmitEvent<HTMLFormElement>)=>{
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         
         setTimeout(() => {

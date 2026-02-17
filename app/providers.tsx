@@ -11,10 +11,14 @@ import PostHogIdentify from '@/lib/posthog-identify';
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <PostHogProvider client={posthog}>
-      {/* <PostHogPageView /> */}
-
+      {/*
+        If you want to anonymize users, keep user={null} below.
+        Otherwise, replace null with the authenticated user from your auth/session provider, e.g.:
+        <PostHogIdentify user={user} />
+        where user is obtained from your auth context or session hook.
+      */}
       <Suspense>
-        <PostHogIdentify user={null} />
+        <PostHogIdentify user={null} /> {/* Pass real user here if available */}
       </Suspense>
       {children}
     </PostHogProvider>

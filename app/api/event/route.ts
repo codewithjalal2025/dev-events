@@ -63,8 +63,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: 'Image too large (max 5MB)' }, { status: 400 });
     }
 
-    let tags= JSON.parse(formData.get('tags') as string) as string[];
-    let agenda = JSON.parse(formData.get('agenda') as string) as string[];
+    // Use the safe parseList helper for tags and agenda
+    let tags = parseList(formData.get('tags'));
+    let agenda = parseList(formData.get('agenda'));
 
     // Now allocate buffer and stream to cloudinary
     const arrayBuffer = await file.arrayBuffer();
@@ -148,7 +149,7 @@ export async function GET() {
   } catch (e) {
     // Normalize GET errors to match POST handler: log server-side, return generic message
     console.error('Error in GET /api/event:', e);
-    return NextResponse.json({ message: 'Event creation failed' }, { status: 500 });
+    return NextResponse.json({ message: 'Event fetch failed' }, { status: 500 });
   }
 }
 

@@ -2,7 +2,7 @@ import BookEvent from "@/components/BookEvent";
 import EventCard from "@/components/EventCard";
 import { IEvent } from "@/database";
 import { getSimilarEventsBySlug } from "@/lib/actions/event.actions";
-import { get } from "http";
+
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
@@ -92,7 +92,7 @@ const EventDetailsPage = async ({ params }: { params: Promise<{ slug: string }> 
 
   const similarEvents:IEvent[]= await  getSimilarEventsBySlug(slug);
 
-  console.log(similarEvents)
+
 
 
   
@@ -181,7 +181,7 @@ const EventDetailsPage = async ({ params }: { params: Promise<{ slug: string }> 
           {
             similarEvents.length > 0 &&
               similarEvents.map((similarEvent: IEvent) => (
-                <EventCard  key={similarEvent.title} {...similarEvent} />
+                <EventCard key={similarEvent.title || similarEvent.slug} {...similarEvent} />
               ))
             
           }
