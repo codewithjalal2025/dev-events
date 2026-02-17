@@ -2,6 +2,7 @@ import BookEvent from "@/components/BookEvent";
 import EventCard from "@/components/EventCard";
 import { IEvent } from "@/database";
 import { getSimilarEventsBySlug } from "@/lib/actions/event.actions";
+import { cacheLife } from "next/cache";
 
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -57,6 +58,9 @@ const NotFoundUI = ({ message = 'Event not found' }: { message?: string }) => (
 );
 
 const EventDetailsPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
+  'use cache';
+  cacheLife('hours');
+  
   const { slug } = await params;
 
   if (!BASE_URL) {
@@ -164,7 +168,7 @@ const EventDetailsPage = async ({ params }: { params: Promise<{ slug: string }> 
                 </p>
               )
             }
-         <BookEvent/>
+         <BookEvent eventId={event._id} slug={slug} />
           </div>
 
 
