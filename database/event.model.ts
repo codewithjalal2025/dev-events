@@ -127,22 +127,32 @@ EventSchema.pre<IEvent>('save', function () {
   }
 });
 
-// Helper function to generate URL-friendly slug
+// Helper function to generate URL-friendly slug with a short unique suffix
 function generateSlug(title: string): string {
-  return title
+  const base = title
     .toLowerCase()
     .trim()
     .replace(/[^a-z0-9\s-]/g, '')
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-')
     .replace(/^-|-$/g, '');
+
+  // Append a short timestamp-based suffix to reduce collisions
+  const suffix = Date.now().toString(36).slice(-6);
+  return `${base}-${suffix}`;
 }
 
 // Helper function to normalize date to ISO format
+// normalizeDate enforces a strict YYYY-MM-DD input and returns YYYY-MM-DD
 function normalizeDate(dateString: string): string {
+  const isoRegex = /^\d{4}-\d{2}-\d{2}$/;
+  if (!isoRegex.test(dateString)) {
+    throw new Error('Invalid date format. Expected YYYY-MM-DD');
+  }
+
   const date = new Date(dateString);
   if (isNaN(date.getTime())) {
-    throw new Error('Invalid date format');
+    throw new Error('Invalid date');
   }
   return date.toISOString().split('T')[0]; // YYYY-MM-DD
 }
@@ -173,7 +183,7 @@ function normalizeTime(timeString: string): string {
 }
 
 // Indexes
-EventSchema.index({ slug: 1 }, { unique: true });
+// EventSchema.index({ slug: 1 }, { unique: true });
 EventSchema.index({ date: 1, mode: 1 });
 
 const Event = models.Event || model<IEvent>('Event', EventSchema);

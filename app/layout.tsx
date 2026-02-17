@@ -5,6 +5,7 @@ import LightRays from "@/components/LightRays";
 import Navbar from "@/components/Navbar";
 import Providers from "./providers";
 import PostHogIdentify from "@/lib/posthog-identify";
+import { Suspense } from "react";
 
 const schibstedGrotesk = Schibsted_Grotesk({
   variable: "--font-schibsted-grotesk",
@@ -56,8 +57,8 @@ export default function RootLayout({
       {/* <PostHogIdentify user={session?.user ?? null} /> */}
 
       <Providers>
-
-    {children}
+       
+          {children}
       </Providers>
     </main>
       </body>
